@@ -1,5 +1,10 @@
 
 # Note: This Queue class is sub-optimal. Why?
+'''
+This is sub-optimal because it uses a list as a makeshift queue in Python, and adding or deleting an element at the beginning requires shifting all of the other elements by one. O(n)
+'''
+
+
 class Queue():
     def __init__(self):
         self.queue = []
