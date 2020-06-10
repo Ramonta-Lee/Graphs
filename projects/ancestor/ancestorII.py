@@ -46,23 +46,39 @@ data = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8),
 
 def earliest_ancestor(ancestors, starting_node):
     g = Graph()
+
+    # loop through data
     for i in ancestors:
-        parent = i[0]
-        child = i[1]
+        parent = i[1]
+        child = i[0]
+        # add child/parent nodes to graph
         g.add_vertex(parent)
         g.add_vertex(child)
-        g.add_edge(child, parent)
+        # add edges to nodes
+        g.add_edge(parent, child)
+
+    # keep track of paths    
     path_list = []
+
+    # keep track of what is being traversed
     stack = Stack()
+    # push starting_node on to stack
     stack.push([starting_node])
+    # store visited nodes
     visited = set()
+    # traverse the stack
     while stack.size() > 0:
+        # store list in path
         path = stack.pop()
         cur_node = path[-1]
+        # if the current node hasn't been visited
         if cur_node not in visited:
             # print(cur_node, path)
+            # add path to list of paths
             path_list.append(path)
+            # add it to visited
             visited.add(cur_node)
+            # get neighbors of node
             for parent in g.get_parents(cur_node):
                 new_path = list(path)
                 new_path.append(parent)
@@ -75,6 +91,7 @@ def earliest_ancestor(ancestors, starting_node):
        i = 0
        j = 1
        correct_list = []
+       
        while j < len(path_list):
         if len(path_list[i]) == len(path_list[j]):
 
@@ -85,6 +102,7 @@ def earliest_ancestor(ancestors, starting_node):
           correct_list = path_list[j]
 
         else:
+         # that last path in the list of paths will hold the earliest ancestor
          correct_list = path_list[j]
 
         i += 1
@@ -125,7 +143,7 @@ def earliest_ancestor(ancestors, starting_node):
 #     print("path_list", path_list)  
 
 
-# earliest_ancestor(data, 8)
+earliest_ancestor(data, 8)
 
         
         
