@@ -13,7 +13,8 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        self.vertices[vertex_id] = set()
+        if vertex_id not in self.vertices:
+            self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
@@ -152,7 +153,8 @@ class Graph:
         stack.push([starting_vertex]) 
         
         while stack.size() > 0:
-            path = stack.pop()
+            path = stack.pop() # path is a LIST
+
             last_vert = path[-1]
             print("last_vert", last_vert)
 
@@ -189,15 +191,8 @@ class Graph:
                     if path:
                         return path
             visited.remove(starting_vertex)
-
-
-
-
-
-
-
-
-
+        
+    
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
