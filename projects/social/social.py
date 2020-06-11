@@ -1,4 +1,21 @@
 import random
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+
+
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -8,35 +25,6 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-    
-    def populate_graph(self, num_users, avg_friendships):
-        # Reset graph
-        self.last_id = 0
-        self.users = {}
-        self.friendships = {}
-
-        # Add users
-        for i in range(0, num_users):
-            self.addUser(f"User {i}")
-
-        # Create Frienships
-        # Generate all possible friendship combinations
-        possible_friendships = []
-
-        # Avoid duplicates by ensuring the first number is smaller than the second
-        for user_id in self.users:
-            for friend_id in range(user_id + 1, self.last_id + 1):
-                possible_friendships.append((user_id, friend_id))
-
-            # Shuffle the possible friendships
-            random.shuffle(possible_friendships)
-
-        # Create friendships for the first X pairs of the list
-        # X is determined by the formula: num_users * avg_friendships // 2
-        # Need to divide by 2 since each add_friendship() creates 2 friendships
-        for i in range(num_users * avg_friendships // 2):
-	        friendship = possible_friendships[i]
-	        self.add_friendship(friendship[0], friendship[1])
 
     def add_friendship(self, user_id, friend_id):
         """
@@ -72,25 +60,77 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
-
+        
         # Add users
+        for i in range(0, num_users):
+            self.add_user(f'User {i}')
 
+        # generate possible friendships
+        possible = []
+
+        # avoid dups by making sure the first number is smaller than the second
+        for user_id in self.users:
+            for friend_id in range(user_id + 1, self.last_id + 1):
+                possible.append((user_id, friend_id))
+
+        # shuffle the possible friendships
+        random.shuffle(possible)
         # Create friendships
+        for i in range(num_users * avg_friendships // 2):
+            friendship = possible[i]
+            self.add_friendship(friendship[0], friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
         Takes a user's user_id as an argument
+        * Take user_id as starting_node
 
         Returns a dictionary containing every user in that user's
         extended network with the shortest friendship path between them.
+        * The claim for BFS is that the first time a node is discovered during the traversal, that distance from the source would give us the shortest path
 
         The key is the friend's ID and the value is the path.
+
+
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        return visited
 
+        # start with an ID
+        # get its friends
+        my_friends = self.friendships[user_id]
+        # print("my_friends", my_friends)
+
+        q = Queue()
+        q.enqueue([user_id])
+        # for each of those friends, add to the visited dict {friend: [user_id, friend]}
+        # for friend in my_friends:
+        #     if friend not in visited:
+        #         visited[friend] = [user_id, friend]
+
+        while q.size() > 0:
+            path = q.dequeue()
+            last_friend = path[-1]
+            # print("last_friend", last_friend)
+
+            if last_friend not in visited:
+                visited[last_friend] = path
+
+                for value in self.friendships[last_friend]:
+                    new_path = list(path)
+                    new_path.append(value)
+                    # print("new_path", new_path)
+                    q.enqueue(new_path)
+                    print("value:", value)
+
+
+
+        # for each of those friends, get their firends and record paths to them
+        print("visited")
+        return visited
+"""
+        
+"""
 
 if __name__ == '__main__':
     sg = SocialGraph()
@@ -98,3 +138,6 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
+
+
+
