@@ -1,8 +1,10 @@
+import random
 from room import Room
 from player import Player
 from world import World
 
-import random
+from world import World
+
 from ast import literal_eval
 
 # Load world
@@ -26,8 +28,30 @@ world.print_rooms()
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-traversal_path = []
+
+def dft_recursive(start_path, visited=None):
+    # traversal_path = ['n', 'n']
+    traversal_path = []
+    
+    visited = set()
+
+
+
+    # If that vertex has been visited
+    if starting_vertex not in visited:
+        print(starting_vertex)
+
+        # Mark it as visited (by adding it to the set)
+        visited.add(starting_vertex)
+
+        for neighbor in self.get_neighbors(starting_vertex):
+            self.dft_recursive(neighbor, visited)
+    
+
+    
+
+    return traversal_path 
+
 
 
 
@@ -51,12 +75,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
