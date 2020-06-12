@@ -15,8 +15,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -47,7 +47,7 @@ visited[player.current_room.id] = player.current_room.get_exits()
 
 
 # until the all rooms visited
-# (-1 for the room we are already)
+# (-1 to subtrack from the graph for the room we are already in)
 while len(visited) < len(room_graph) - 1: 
     # if the current room hasn't been visited
     if player.current_room.id not in visited:
