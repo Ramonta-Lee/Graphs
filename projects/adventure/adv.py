@@ -15,8 +15,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-# map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+map_file = "maps/test_loop_fork.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -27,30 +27,38 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+
 # Fill this out with directions to walk
+# traversal_path = ['n', 'n']
+traversal_path = []
+visited = {}
+directions = {"n": "s", "s": "n", "e": "w", "w":"e" }
+path = []
 
-def dft_recursive(start_path, visited=None):
-    # traversal_path = ['n', 'n']
-    traversal_path = []
+visited[player.current_room.id] = player.current_room.get_exits()
+
+while len(visited) < len(room_graph) - 1:
+
+    if player.current_room.id not in visited:
+        visited[player.current_room.id] = player.current_room.get_exits()
+        previous_direction = path[-1]
+
+        visited[player.current_room.id].remove(previous_direction)
     
-    visited = set()
+    while len(visited[player.current_room.id]) == 0:
+        previous_direction = path.pop()
 
+        traversal_path.append(previous_direction)
+        player.travel(previous_direction)
 
+    move = visited[player.current_room.id].pop(0)
+    print("move", move)
+    # print("directions", directions)
 
-    # If that vertex has been visited
-    if starting_vertex not in visited:
-        print(starting_vertex)
+    traversal_path.append(move)
+    path.append(directions[move])
+    player.travel(move)
 
-        # Mark it as visited (by adding it to the set)
-        visited.add(starting_vertex)
-
-        for neighbor in self.get_neighbors(starting_vertex):
-            self.dft_recursive(neighbor, visited)
-    
-
-    
-
-    return traversal_path 
 
 
 
