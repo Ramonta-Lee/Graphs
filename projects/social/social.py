@@ -64,6 +64,16 @@ class SocialGraph:
         # Add users
         for i in range(0, num_users):
             self.add_user(f'User {i}')
+        
+        # OPTIMIZED solution
+        # target_friendships = (num_users * avg_friendships) // 2
+        # total_friendships = 0
+
+        # while total_friendships < target_friendships:
+        #     user_id = random.randint(1, self.last_id)
+        #     friend_id = random.randint(1, self.last_id)
+        #     if self.add_friendship(user_id, friend_id):
+        #         total_friendships += 1
 
         # generate possible friendships
         possible = []
@@ -116,12 +126,20 @@ class SocialGraph:
             if last_friend not in visited:
                 visited[last_friend] = path
 
+                # copy and append new list
+                # with newly added value
                 for value in self.friendships[last_friend]:
-                    new_path = list(path)
-                    new_path.append(value)
+                    # new_path = list(path)
+                    # new_path.append(value)
                     # print("new_path", new_path)
-                    q.enqueue(new_path)
-                    print("value:", value)
+                    # q.enqueue(new_path)
+                    # print("value:", value)
+
+                    # another example:
+                    # q.enqueue(path + [value])
+
+                    # another example:
+                    q.enqueue([*path, value])
 
 
 
@@ -134,10 +152,20 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(10, 3)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
 
+# for i in range(1, 1000):
+#     connections = sg.get_all_social_paths(i)
+
+#     users_in_ext_network = len(connections) - 1
+#     total_users = len(sg.users)
+
+#     percentage = users_in_ext_network / total_users * 100
+
+#     if percentage < 94:
+#         print(f'User {i}: percentage: {percentage: .2f}')
 
 

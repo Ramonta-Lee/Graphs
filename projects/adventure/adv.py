@@ -82,6 +82,7 @@ while len(visited) < len(room_graph) - 1:
     path.append(directions[move])
 
     # to move to the next room and get its info
+    # uses method
     player.travel(move)
 
 
